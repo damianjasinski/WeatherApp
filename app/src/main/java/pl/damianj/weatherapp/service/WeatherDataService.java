@@ -13,7 +13,7 @@ public interface WeatherDataService {
 //    @GET("/data/2.5/weather?appid=" + BuildConfig.API_KEY)
 //    Call<WeatherData> getWeatherData(@Query("q") String cityName);
 
-    @GET("data/2.5/weather?&appid=" + BuildConfig.API_KEY)
+    @GET("data/2.5/weather?&appid=" + BuildConfig.API_KEY + "&units=metric")
     Call<WeatherData> getWeatherData(@Query("lat") Double lat, @Query("lon") Double lon);
 
     @GET("/geo/1.0/direct?&appid=" + BuildConfig.API_KEY)

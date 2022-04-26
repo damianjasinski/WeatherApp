@@ -1,5 +1,6 @@
 package pl.damianj.weatherapp.repository;
 
+import android.security.identity.InvalidRequestMessageException;
 import android.util.Log;
 
 import java.util.List;
@@ -48,14 +49,19 @@ public class WeatherApiRepository {
         });
     }
 
-    public void getGeoCity(String cityName, WeatherDataViewModel weatherDataVM) {
+    public void getGeoCity(String cityName, WeatherDataViewModel weatherDataVM)  {
         weatherDataService.getCityGeo(cityName).enqueue(new Callback<List<Coord>>() {
             @Override
             public void onResponse(Call<List<Coord>> call, Response<List<Coord>> response) {
-                Coord coord = new Coord(response.body().get(0));
-                Log.i("RETROFIT-GEOCITY", coord.getLat().toString() + coord.getLon().toString());
-                weatherDataVM.setCoord(coord);
-                weatherDataVM.setCityName(cityName);
+                if (response.body().size() == 0) {
+                   weatherDataVM.setError("City not found");
+                }
+                else {
+                    Log.i("RETROFIT-GEOCITY", response.body().toString());
+                    Coord coord = new Coord(response.body().get(0));
+                    weatherDataVM.setCoord(coord);
+                    weatherDataVM.setCityName(cityName);
+                }
             }
 
             @Override

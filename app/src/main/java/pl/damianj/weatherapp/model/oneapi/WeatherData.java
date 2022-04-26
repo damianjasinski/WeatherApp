@@ -13,6 +13,7 @@ public class WeatherData {
     private Rain rain;
     private List<Daily> dailyForecast;
 
+
     public Double getLat() {
         return lat;
     }

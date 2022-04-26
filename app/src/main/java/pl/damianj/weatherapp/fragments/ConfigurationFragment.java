@@ -15,7 +15,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
+
 import pl.damianj.weatherapp.R;
+import pl.damianj.weatherapp.model.Sys;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
@@ -29,7 +39,13 @@ public class ConfigurationFragment extends Fragment {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(WeatherDataService.class);
-    private EditText cityNameText;
+    private EditText cityInputTextView;
+    private TextView pressureTextView;
+    private TextView temperatureTextView;
+    private TextView geolocationTextView;
+    private TextView cityNameTextView;
+    private TextView coordsTextView;
+    private TextView timeTextView;
     private WeatherDataViewModel viewModel;
     private WeatherApiRepository weatherApiRepository;
 
@@ -59,15 +75,23 @@ public class ConfigurationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.configuration_fragment, container, false);
-        cityNameText = root.findViewById(R.id.input_city);
         viewModel = new ViewModelProvider(requireActivity()).get(WeatherDataViewModel.class);
-        this.weatherApiRepository = WeatherApiRepository.getInstance();
+        weatherApiRepository = WeatherApiRepository.getInstance();
+        cityInputTextView = root.findViewById(R.id.input_city);
+        coordsTextView = root.findViewById(R.id.coords_text_view);
+        timeTextView = root.findViewById(R.id.time_text_view);
+        pressureTextView = root.findViewById(R.id.pressure_text_view);
+        temperatureTextView = root.findViewById(R.id.temp_text_view);
+        cityNameTextView = root.findViewById(R.id.city_text_view);
         setEditTextListener(weatherApiRepository);
+        observeError();
+        observeCityName();
+        observeWeatherData();
         return root;
     }
 
-    private void setEditTextListener (WeatherApiRepository weatherApiRepository) {
-        cityNameText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+    private void setEditTextListener(WeatherApiRepository weatherApiRepository) {
+        cityInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
@@ -79,4 +103,29 @@ public class ConfigurationFragment extends Fragment {
         });
     }
 
+    private void observeCityName() {
+        viewModel.getCityName().observe(getViewLifecycleOwner(), cityName -> {
+            weatherApiRepository.getWeatherData(viewModel.getCoord(), viewModel);
+        });
+    }
+
+    private void observeWeatherData() {
+        viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
+            cityNameTextView.setText(weatherData.getName());
+            coordsTextView.setText(weatherData.getCoord().getLat() + "\n" + weatherData.getCoord().getLon().toString());
+            Timestamp timestamp = new Timestamp(Instant.ofEpochSecond(weatherData.getDt()).getEpochSecond());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
+            timeTextView.setText(simpleDateFormat.format(timestamp));
+            int temp = weatherData.getMain().getTemp().intValue();
+            temperatureTextView.setText(Integer.toString(temp) + " C");
+            pressureTextView.setText(weatherData.getMain().getPressure().toString() + " hPa");
+        });
+    }
+
+    private void observeError() {
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            this.cityNameTextView.setText(error);
+        });
+    }
 }

@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class WeatherDataViewModel extends ViewModel {
     private MutableLiveData<String> cityName = new MutableLiveData<>();
     private MutableLiveData<WeatherData> weatherData = new MutableLiveData<>();
+    private MutableLiveData<String> error = new MutableLiveData<>();
     private Coord coord;
 
 
@@ -32,6 +33,15 @@ public class WeatherDataViewModel extends ViewModel {
     public void setWeatherData(WeatherData weatherData) {
         this.weatherData.setValue(weatherData);
     }
+
+    public void setError(String error) {
+        this.error.setValue(error);
+    }
+
+    public LiveData<String> getError() {
+        return this.error;
+    }
+
 
     public LiveData<WeatherData> getWeatherData() {
         return this.weatherData;
