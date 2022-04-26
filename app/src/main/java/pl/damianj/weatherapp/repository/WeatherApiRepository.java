@@ -7,6 +7,8 @@ import java.util.List;
 
 import pl.damianj.weatherapp.model.Coord;
 import pl.damianj.weatherapp.model.WeatherData;
+import pl.damianj.weatherapp.model.oneapi.Daily;
+import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 import retrofit2.Call;
@@ -34,17 +36,17 @@ public class WeatherApiRepository {
     }
 
     public void getWeatherData(Coord coords, WeatherDataViewModel weatherDataVM) {
-        weatherDataService.getWeatherData(coords.getLat(), coords.getLon()).enqueue(new Callback<WeatherData>() {
+        weatherDataService.getWeatherData(coords.getLat(), coords.getLon()).enqueue(new Callback<WeatherForecast>() {
             @Override
-            public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
+            public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
-                WeatherData weatherData = response.body();
+                WeatherForecast weatherData = response.body();
                 weatherDataVM.setWeatherData(weatherData);
             }
 
             @Override
-            public void onFailure(Call<WeatherData> call, Throwable t) {
-                Log.e("RETROFIT-WEATHERDATA", "Request was unsuccesfull");
+            public void onFailure(Call<WeatherForecast> call, Throwable t) {
+                Log.e("RETROFIT-WEATHERDATA", "Request was unsuccesfull " + t.getMessage() );
             }
         });
     }
@@ -70,4 +72,5 @@ public class WeatherApiRepository {
             }
         });
     }
+
 }

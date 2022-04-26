@@ -47,16 +47,25 @@ public class AdditionalDataFragment extends Fragment {
         humidityTextView = root.findViewById(R.id.humidity_text_view);
         visibilityTextView = root.findViewById(R.id.visibility_text_view);
         observeWeatherData();
+        observeError();
         return root;
     }
 
     private void observeWeatherData() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            int wind = weatherData.getMain().getTemp().intValue();
-            windTextView.setText(Integer.toString(wind) + "m/s");
-            humidityTextView.setText(weatherData.getMain().getHumidity().toString() + "%");
-            int visibility = weatherData.getVisibility()/1000;
+            double wind = weatherData.getCurrent().getWindSpeed();
+            windTextView.setText(Double.toString(wind) + "m/s");
+            humidityTextView.setText(weatherData.getCurrent().getHumidity().toString() + "%");
+            int visibility = weatherData.getCurrent().getVisibility()/1000;
             visibilityTextView.setText(Integer.toString(visibility) + "km");
+        });
+    }
+
+    private void observeError() {
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            windTextView.setText("");
+            humidityTextView.setText("");
+            visibilityTextView.setText("");
         });
     }
 }

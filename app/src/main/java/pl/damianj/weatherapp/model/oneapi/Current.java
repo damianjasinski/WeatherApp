@@ -1,4 +1,6 @@
 package pl.damianj.weatherapp.model.oneapi;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,15 +11,16 @@ public class Current {
     private Integer sunrise;
     private Integer sunset;
     private Double temp;
-    private Double feelsLike;
+    private Double feels_like;
     private Integer pressure;
     private Integer humidity;
     private Double dewPoint;
     private Double uvi;
     private Integer clouds;
     private Integer visibility;
-    private Integer windSpeed;
-    private Integer windDeg;
+    @SerializedName("wind_speed")
+    private Double windSpeed;
+    private Integer wind_deg;
     private List<Weather> weather = null;
     private Rain rain;
 
@@ -54,11 +57,11 @@ public class Current {
     }
 
     public Double getFeelsLike() {
-        return feelsLike;
+        return feels_like;
     }
 
-    public void setFeelsLike(Double feelsLike) {
-        this.feelsLike = feelsLike;
+    public void setFeelsLike(Double feels_like) {
+        this.feels_like = Current.this.feels_like;
     }
 
     public Integer getPressure() {
@@ -109,20 +112,20 @@ public class Current {
         this.visibility = visibility;
     }
 
-    public Integer getWindSpeed() {
+    public Double getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(Integer windSpeed) {
-        this.windSpeed = windSpeed;
+    public void setWindSpeed(Double windSpeed) {
+        this.windSpeed = Current.this.windSpeed;
     }
 
     public Integer getWindDeg() {
-        return windDeg;
+        return wind_deg;
     }
 
-    public void setWindDeg(Integer windDeg) {
-        this.windDeg = windDeg;
+    public void setWindDeg(Integer wind_deg) {
+        this.wind_deg = wind_deg;
     }
 
     public List<Weather> getWeather() {

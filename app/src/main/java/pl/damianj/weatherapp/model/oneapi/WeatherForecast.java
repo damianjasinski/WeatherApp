@@ -2,7 +2,7 @@ package pl.damianj.weatherapp.model.oneapi;
 
 import java.util.List;
 
-public class WeatherData {
+public class WeatherForecast {
 
     private Double lat;
     private Double lon;
@@ -11,7 +11,7 @@ public class WeatherData {
     private Current current;
     private Weather weather;
     private Rain rain;
-    private List<Daily> dailyForecast;
+    private List<Daily> daily;
 
 
     public Double getLat() {
@@ -70,11 +70,11 @@ public class WeatherData {
         this.rain = rain;
     }
 
-    public List<Daily> getDailyForecast() {
-        return dailyForecast;
+    public List<Daily> getDaily() {
+        return daily;
     }
 
-    public void setDailyForecast(List<Daily> dailyForecast) {
-        this.dailyForecast = dailyForecast;
+    public void setDaily(List<Daily> dailyForecast) {
+        this.daily = daily;
     }
 }

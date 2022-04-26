@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModel;
 
 import pl.damianj.weatherapp.model.Coord;
 import pl.damianj.weatherapp.model.WeatherData;
+import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherDataViewModel extends ViewModel {
     private MutableLiveData<String> cityName = new MutableLiveData<>();
-    private MutableLiveData<WeatherData> weatherData = new MutableLiveData<>();
+    private MutableLiveData<WeatherForecast> weatherData = new MutableLiveData<>();
     private MutableLiveData<String> error = new MutableLiveData<>();
     private Coord coord;
 
@@ -30,7 +31,7 @@ public class WeatherDataViewModel extends ViewModel {
         this.cityName.setValue(cityName);
     }
 
-    public void setWeatherData(WeatherData weatherData) {
+    public void setWeatherData(WeatherForecast weatherData) {
         this.weatherData.setValue(weatherData);
     }
 
@@ -43,7 +44,7 @@ public class WeatherDataViewModel extends ViewModel {
     }
 
 
-    public LiveData<WeatherData> getWeatherData() {
+    public LiveData<WeatherForecast> getWeatherData() {
         return this.weatherData;
     }
 

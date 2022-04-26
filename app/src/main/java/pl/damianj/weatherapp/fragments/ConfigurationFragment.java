@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -42,7 +43,6 @@ public class ConfigurationFragment extends Fragment {
     private EditText cityInputTextView;
     private TextView pressureTextView;
     private TextView temperatureTextView;
-    private TextView geolocationTextView;
     private TextView cityNameTextView;
     private TextView coordsTextView;
     private TextView timeTextView;
@@ -94,7 +94,7 @@ public class ConfigurationFragment extends Fragment {
         cityInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
+                if (i == 5) {
                     weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
                     return false;
                 }
@@ -111,21 +111,27 @@ public class ConfigurationFragment extends Fragment {
 
     private void observeWeatherData() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            cityNameTextView.setText(weatherData.getName());
-            coordsTextView.setText(weatherData.getCoord().getLat() + "\n" + weatherData.getCoord().getLon().toString());
-            Timestamp timestamp = new Timestamp(Instant.ofEpochSecond(weatherData.getDt()).getEpochSecond());
+            cityNameTextView.setText(cityInputTextView.getText());
+            coordsTextView.setText(weatherData.getLat() + "\n" + weatherData.getLon().toString());
+            Timestamp timestamp = new Timestamp(Instant.ofEpochSecond(weatherData.getCurrent().getDt()).getEpochSecond());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
             timeTextView.setText(simpleDateFormat.format(timestamp));
-            int temp = weatherData.getMain().getTemp().intValue();
+            int temp = weatherData.getCurrent().getTemp().intValue();
             temperatureTextView.setText(Integer.toString(temp) + " C");
-            pressureTextView.setText(weatherData.getMain().getPressure().toString() + " hPa");
+            pressureTextView.setText(weatherData.getCurrent().getPressure().toString() + " hPa");
         });
     }
 
     private void observeError() {
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             this.cityNameTextView.setText(error);
+            coordsTextView.setText("");
+            timeTextView.setText("");
+            temperatureTextView.setText("");
+            pressureTextView.setText("");
         });
     }
+
+
 }
