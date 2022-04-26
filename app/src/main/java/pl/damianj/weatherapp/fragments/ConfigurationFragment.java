@@ -94,7 +94,7 @@ public class ConfigurationFragment extends Fragment {
         cityInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == 5) {
+                if (i == 6) {
                     weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
                     return false;
                 }
