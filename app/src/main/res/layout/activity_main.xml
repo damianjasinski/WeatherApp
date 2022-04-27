@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#090C2E"
+    android:background="#0C103E"
     tools:context=".MainActivity">
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/config_fragment"
@@ -27,13 +28,27 @@
         app:layout_constraintTop_toBottomOf="@+id/config_fragment"
         app:layout_constraintVertical_bias="0.04000002" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/pager_background"
+        android:backgroundTint="#046A61"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/additional_data_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/additional_data_fragment">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/pager_background"
+            android:backgroundTint="#046A61"
+            android:focusable="auto">
+
+        </androidx.viewpager2.widget.ViewPager2>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

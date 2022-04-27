@@ -21,6 +21,7 @@
             android:textAlignment="center"
             android:textColorHint="#26C6DA"
             android:textSize="24sp"
+            android:visibility="visible"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
@@ -32,18 +33,37 @@
             android:fontFamily="sans-serif"
             android:text="Enter city name"
             android:textAlignment="center"
-            android:textColor="#66FFFFFF"
+            android:textColor="#B2AEAEAE"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/city_text_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:textAlignment="center"
-            android:textSize="36sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/city_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="3"
+                android:fontFamily="sans-serif-medium"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/weather_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="4" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,6 +79,7 @@
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="Time"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -70,6 +91,7 @@
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="Temp"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -81,6 +103,7 @@
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="Coords"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -92,6 +115,7 @@
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="Pressure"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -109,6 +133,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
             <TextView
@@ -118,6 +143,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
             <TextView
@@ -127,6 +153,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
             <TextView
@@ -136,6 +163,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
 

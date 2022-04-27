@@ -9,7 +9,6 @@ public class WeatherForecast {
     private String timezone;
     private Integer timezoneOffset;
     private Current current;
-    private Weather weather;
     private Rain rain;
     private List<Daily> daily;
 
@@ -54,13 +53,6 @@ public class WeatherForecast {
         this.current = current;
     }
 
-    public Weather getWeather() {
-        return weather;
-    }
-
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
 
     public Rain getRain() {
         return rain;

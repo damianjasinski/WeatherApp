@@ -1,5 +1,6 @@
 package pl.damianj.weatherapp.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -14,7 +15,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -27,6 +31,7 @@ import java.util.TimeZone;
 
 import pl.damianj.weatherapp.R;
 import pl.damianj.weatherapp.model.Sys;
+import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
@@ -46,6 +51,7 @@ public class ConfigurationFragment extends Fragment {
     private TextView cityNameTextView;
     private TextView coordsTextView;
     private TextView timeTextView;
+    private ImageView weatherIcon;
     private WeatherDataViewModel viewModel;
     private WeatherApiRepository weatherApiRepository;
 
@@ -57,6 +63,7 @@ public class ConfigurationFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -81,6 +88,7 @@ public class ConfigurationFragment extends Fragment {
         coordsTextView = root.findViewById(R.id.coords_text_view);
         timeTextView = root.findViewById(R.id.time_text_view);
         pressureTextView = root.findViewById(R.id.pressure_text_view);
+        weatherIcon = root.findViewById(R.id.weather_icon);
         temperatureTextView = root.findViewById(R.id.temp_text_view);
         cityNameTextView = root.findViewById(R.id.city_text_view);
         setEditTextListener(weatherApiRepository);
@@ -94,13 +102,32 @@ public class ConfigurationFragment extends Fragment {
         cityInputTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == 6) {
-                    weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
-                    return false;
+                if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT) {
+                    if ( !textView.getText().toString().equals(cityNameTextView.getText().toString())) {
+                        weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
+                    }
+                    hideSoftKeyboard(getActivity());
+                    return true;
                 }
-                return true;
+
+                return false;
             }
         });
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        try {
+            InputMethodManager inputMethodManager =
+                    (InputMethodManager) activity.getSystemService(
+                            Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(), 0);
+            //inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     private void observeCityName() {
@@ -111,16 +138,24 @@ public class ConfigurationFragment extends Fragment {
 
     private void observeWeatherData() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            cityNameTextView.setText(cityInputTextView.getText());
+            cityNameTextView.setText(cityInputTextView.getText().toString());
             coordsTextView.setText(weatherData.getLat() + "\n" + weatherData.getLon().toString());
-            Timestamp timestamp = new Timestamp(Instant.ofEpochSecond(weatherData.getCurrent().getDt()).getEpochSecond());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
-            timeTextView.setText(simpleDateFormat.format(timestamp));
+            timeTextView.setText(weatherData.getCurrent().getRequestTime().getHour() + ":" + weatherData.getCurrent().getRequestTime().getMinute());
             int temp = weatherData.getCurrent().getTemp().intValue();
             temperatureTextView.setText(Integer.toString(temp) + " C");
             pressureTextView.setText(weatherData.getCurrent().getPressure().toString() + " hPa");
+            setWeatherIcon(weatherData.getCurrent().getWeather().get(0).getIcon());
+
         });
+    }
+
+    private void setWeatherIcon(String iconId) {
+        String url = "https://openweathermap.org/img/wn/" + iconId + "@4x.png";
+        Glide.with(getActivity())
+                .load(url)
+                .override(200, 250)
+                .into(weatherIcon);
+
     }
 
     private void observeError() {

@@ -1,7 +1,10 @@
 package pl.damianj.weatherapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -31,8 +34,8 @@ public class MainActivity extends FragmentActivity {
         decorView.setSystemUiVisibility(uiOptions);
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
-        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setFocusedByDefault(false);
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
@@ -40,7 +43,10 @@ public class MainActivity extends FragmentActivity {
                     .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
                     .commit();
         }
+
     }
+
+
 
 
 

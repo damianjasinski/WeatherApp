@@ -5,13 +5,21 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 import pl.damianj.weatherapp.R;
+import pl.damianj.weatherapp.model.oneapi.Daily;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class WeeklyFragment extends Fragment {
@@ -19,6 +27,8 @@ public class WeeklyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private Integer pageNumber;
     private TextView dayTextView;
+    private TextView tempTextView;
+    private ImageView weatherIcon;
     private WeatherDataViewModel viewModel;
 
     public WeeklyFragment() {
@@ -47,15 +57,30 @@ public class WeeklyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.weekly_fragment, container, false);
-        dayTextView = root.findViewById(R.id.day_text_view);
+        dayTextView = root.findViewById(R.id.day_name_text);
+        tempTextView = root.findViewById(R.id.temperature_text);
+        weatherIcon = root.findViewById(R.id.weather_icon2);
         observeWeatherPage();
-        Log.i("XD", "XD");
         return root;
     }
 
     public void observeWeatherPage() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
-            dayTextView.setText(weatherForecast.getDaily().get(pageNumber).toString());
+            Daily daily = weatherForecast.getDaily().get(pageNumber);
+            LocalDate today = LocalDate.now().plusDays(pageNumber);
+            dayTextView.setText(today.getDayOfWeek().toString());
+            int temp = daily.getTemp().getDay().intValue();
+            tempTextView.setText(Integer.toString(temp) + " C");
+            setWeatherIcon(daily.getWeather().get(0).getIcon());
         });
+    }
+
+    private void setWeatherIcon(String iconId) {
+        String url = "https://openweathermap.org/img/wn/" + iconId + "@4x.png";
+        Glide.with(getActivity())
+                .load(url)
+                .override(400, 450)
+                .into(weatherIcon);
+
     }
 }

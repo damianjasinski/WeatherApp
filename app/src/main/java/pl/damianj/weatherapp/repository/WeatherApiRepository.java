@@ -3,6 +3,7 @@ package pl.damianj.weatherapp.repository;
 import android.security.identity.InvalidRequestMessageException;
 import android.util.Log;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import pl.damianj.weatherapp.model.Coord;
@@ -41,6 +42,7 @@ public class WeatherApiRepository {
             public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
+                weatherData.getCurrent().setRequestTime(LocalTime.now());
                 weatherDataVM.setWeatherData(weatherData);
             }
 

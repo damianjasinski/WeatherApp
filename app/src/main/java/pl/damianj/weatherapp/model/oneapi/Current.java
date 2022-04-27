@@ -1,12 +1,14 @@
 package pl.damianj.weatherapp.model.oneapi;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Current {
 
+    private LocalTime request_time;
     private Integer dt;
     private Integer sunrise;
     private Integer sunset;
@@ -23,6 +25,14 @@ public class Current {
     private Integer wind_deg;
     private List<Weather> weather = null;
     private Rain rain;
+
+    public LocalTime getRequestTime() {
+        return request_time;
+    }
+
+    public void setRequestTime(LocalTime time) {
+        request_time = time;
+    }
 
     public Integer getDt() {
         return dt;
