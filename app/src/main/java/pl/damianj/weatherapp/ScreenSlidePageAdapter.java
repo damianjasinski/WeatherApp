@@ -26,6 +26,7 @@ public class ScreenSlidePageAdapter extends FragmentStateAdapter {
     // Returns the fragment to display for that page
 
 
+
     @Override
     public int getItemCount() {
         return numOfPages;

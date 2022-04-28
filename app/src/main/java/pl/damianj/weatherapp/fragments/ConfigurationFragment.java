@@ -140,7 +140,8 @@ public class ConfigurationFragment extends Fragment {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
             cityNameTextView.setText(cityInputTextView.getText().toString());
             coordsTextView.setText(weatherData.getLat() + "\n" + weatherData.getLon().toString());
-            timeTextView.setText(weatherData.getCurrent().getRequestTime().getHour() + ":" + weatherData.getCurrent().getRequestTime().getMinute());
+            timeTextView.setText(weatherData.getCurrent().getRequestTime().getHour() + ":" + weatherData.getCurrent().getRequestTime().getMinute()
+                    + "\n" + weatherData.getCurrent().getRequestTime().getDayOfMonth() + "/" + weatherData.getCurrent().getRequestTime().getMonth());
             int temp = weatherData.getCurrent().getTemp().intValue();
             temperatureTextView.setText(Integer.toString(temp) + " C");
             pressureTextView.setText(weatherData.getCurrent().getPressure().toString() + " hPa");

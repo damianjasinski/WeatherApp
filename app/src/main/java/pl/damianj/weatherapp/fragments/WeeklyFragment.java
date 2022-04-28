@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import pl.damianj.weatherapp.R;
 import pl.damianj.weatherapp.model.oneapi.Daily;
@@ -68,11 +69,25 @@ public class WeeklyFragment extends Fragment {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
             Daily daily = weatherForecast.getDaily().get(pageNumber);
             LocalDate today = LocalDate.now().plusDays(pageNumber);
-            dayTextView.setText(today.getDayOfWeek().toString());
+            setDayName(today.getDayOfWeek().toString());
             int temp = daily.getTemp().getDay().intValue();
             tempTextView.setText(Integer.toString(temp) + " C");
             setWeatherIcon(daily.getWeather().get(0).getIcon());
         });
+    }
+
+    private void setDayName(String day ) {
+        if (pageNumber == 0) {
+            dayTextView.setText("Today");
+        }
+        else if (pageNumber == 1) {
+            dayTextView.setText("Tommorow");
+        }
+        else {
+            day = day.toLowerCase(Locale.ROOT);
+            String dayTitle = day.substring(0, 1).toUpperCase(Locale.ROOT);
+            dayTextView.setText(dayTitle + day.substring(1));
+        }
     }
 
     private void setWeatherIcon(String iconId) {
@@ -81,6 +96,5 @@ public class WeeklyFragment extends Fragment {
                 .load(url)
                 .override(400, 450)
                 .into(weatherIcon);
-
     }
 }

@@ -10,12 +10,15 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
+import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class MainActivity extends FragmentActivity {
 
@@ -23,6 +26,7 @@ public class MainActivity extends FragmentActivity {
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
     private Integer numOfPages = 7;
+    private WeatherDataViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +47,24 @@ public class MainActivity extends FragmentActivity {
                     .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
                     .commit();
         }
-
+        viewModel = new ViewModelProvider(this).get(WeatherDataViewModel.class);
+        viewModel.getWeatherData().observe(this, weatherData -> {
+            viewPager.setCurrentItem(0);
+        });
     }
 
 
 
 
 
-//    @Override
-//    public void onBackPressed() {
-//        if (viewPager.getCurrentItem() == 0) {
-//            super.onBackPressed();
-//        } else {
-//            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
+    }
 
 
 }
