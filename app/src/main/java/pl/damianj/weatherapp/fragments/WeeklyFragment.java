@@ -67,7 +67,7 @@ public class WeeklyFragment extends Fragment {
 
     public void observeWeatherPage() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
-            Daily daily = weatherForecast.getDaily().get(pageNumber);
+            Daily daily = weatherForecast.getDaily().get(pageNumber + 1) ;
             LocalDate today = LocalDate.now().plusDays(pageNumber);
             setDayName(today.getDayOfWeek().toString());
             int temp = daily.getTemp().getDay().intValue();
@@ -78,9 +78,6 @@ public class WeeklyFragment extends Fragment {
 
     private void setDayName(String day ) {
         if (pageNumber == 0) {
-            dayTextView.setText("Today");
-        }
-        else if (pageNumber == 1) {
             dayTextView.setText("Tommorow");
         }
         else {

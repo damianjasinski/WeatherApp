@@ -25,7 +25,7 @@ public class MainActivity extends FragmentActivity {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
-    private Integer numOfPages = 7;
+    private Integer numOfPages = 6;
     private WeatherDataViewModel viewModel;
 
     @Override
