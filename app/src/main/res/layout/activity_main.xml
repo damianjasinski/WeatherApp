@@ -19,33 +19,45 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/primary_fragment"
+        android:name="pl.damianj.weatherapp.fragments.PrimaryDataFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/additional_data_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/config_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/config_fragment" />
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/additional_data_fragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/config_fragment"
-        app:layout_constraintVertical_bias="0.04000002" />
+        app:layout_constraintVertical_bias="0.07999998" />
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/pager_background"
         android:backgroundTint="#046A61"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/additional_data_fragment">
+        app:layout_constraintTop_toBottomOf="@+id/additional_data_fragment"
+        app:layout_constraintVertical_bias="0.56">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="70dp"
             android:background="@drawable/pager_background"
             android:backgroundTint="#046A61"
             android:focusable="auto">

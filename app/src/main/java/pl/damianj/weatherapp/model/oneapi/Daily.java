@@ -17,7 +17,7 @@ public class Daily {
     private Integer pressure;
     private Integer humidity;
     private Double dewPoint;
-    private Double windSpeed;
+    private Double wind_speed;
     private Integer windDeg;
     private List<Weather> weather = null;
     private Integer clouds;
@@ -114,11 +114,11 @@ public class Daily {
     }
 
     public Double getWindSpeed() {
-        return windSpeed;
+        return wind_speed;
     }
 
-    public void setWindSpeed(Double windSpeed) {
-        this.windSpeed = windSpeed;
+    public void setWindSpeed(Double wind_speed) {
+        this.wind_speed = wind_speed;
     }
 
     public Integer getWindDeg() {

@@ -13,10 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import pl.damianj.weatherapp.R;
@@ -29,6 +26,15 @@ public class WeeklyFragment extends Fragment {
     private Integer pageNumber;
     private TextView dayTextView;
     private TextView tempTextView;
+    private TextView windTextView;
+    private TextView humidTextView;
+    private TextView pressureTextView;
+
+    private TextView tempTextHint;
+    private TextView windTextHint;
+    private TextView humidTextHint;
+    private TextView pressureTextHint;
+
     private ImageView weatherIcon;
     private WeatherDataViewModel viewModel;
 
@@ -59,7 +65,14 @@ public class WeeklyFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.weekly_fragment, container, false);
         dayTextView = root.findViewById(R.id.day_name_text);
-        tempTextView = root.findViewById(R.id.temperature_text);
+        tempTextView = root.findViewById(R.id.temperature_text_view);
+        windTextView = root.findViewById(R.id.wind_text_view);
+        humidTextView = root.findViewById(R.id.humidity_text_view);
+        pressureTextView = root.findViewById(R.id.pressure_text_view);
+        tempTextHint = root.findViewById(R.id.temperature_text_hint);
+        windTextHint = root.findViewById(R.id.wind_text_hint);
+        humidTextHint = root.findViewById(R.id.humidity_text_hint);
+        pressureTextHint = root.findViewById(R.id.pressure_text_hint);
         weatherIcon = root.findViewById(R.id.weather_icon2);
         observeWeatherPage();
         return root;
@@ -69,10 +82,14 @@ public class WeeklyFragment extends Fragment {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
             Daily daily = weatherForecast.getDaily().get(pageNumber + 1) ;
             LocalDate today = LocalDate.now().plusDays(pageNumber);
-            setDayName(today.getDayOfWeek().toString());
             int temp = daily.getTemp().getDay().intValue();
-            tempTextView.setText(Integer.toString(temp) + " C");
+            setDayName(today.getDayOfWeek().toString());
             setWeatherIcon(daily.getWeather().get(0).getIcon());
+            tempTextView.setText(temp + " C\n" + daily.getWeather().get(0).getMain());
+            windTextView.setText(daily.getWindSpeed().toString() + "m/s");
+            humidTextView.setText(daily.getHumidity().toString() + "%");
+            pressureTextView.setText(daily.getPressure().toString() + "hpA");
+            setHintsVisible();
         });
     }
 
@@ -93,5 +110,12 @@ public class WeeklyFragment extends Fragment {
                 .load(url)
                 .override(400, 450)
                 .into(weatherIcon);
+    }
+
+    private void setHintsVisible() {
+        tempTextHint.setVisibility(View.VISIBLE);
+        windTextHint.setVisibility(View.VISIBLE);
+        humidTextHint.setVisibility(View.VISIBLE);
+        pressureTextHint.setVisibility(View.VISIBLE);
     }
 }

@@ -20,18 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
-
 import pl.damianj.weatherapp.R;
-import pl.damianj.weatherapp.model.Sys;
-import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
@@ -39,18 +28,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConfigurationFragment extends Fragment {
 
-
     private final WeatherDataService service = new retrofit2.Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(WeatherDataService.class);
     private EditText cityInputTextView;
-    private TextView pressureTextView;
-    private TextView temperatureTextView;
     private TextView cityNameTextView;
-    private TextView coordsTextView;
-    private TextView timeTextView;
     private ImageView weatherIcon;
     private WeatherDataViewModel viewModel;
     private WeatherApiRepository weatherApiRepository;
@@ -85,11 +69,7 @@ public class ConfigurationFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(WeatherDataViewModel.class);
         weatherApiRepository = WeatherApiRepository.getInstance();
         cityInputTextView = root.findViewById(R.id.input_city);
-        coordsTextView = root.findViewById(R.id.coords_text_view);
-        timeTextView = root.findViewById(R.id.time_text_view);
-        pressureTextView = root.findViewById(R.id.pressure_text_view);
         weatherIcon = root.findViewById(R.id.weather_icon);
-        temperatureTextView = root.findViewById(R.id.temp_text_view);
         cityNameTextView = root.findViewById(R.id.city_text_view);
         setEditTextListener(weatherApiRepository);
         observeError();
@@ -107,6 +87,7 @@ public class ConfigurationFragment extends Fragment {
                         weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
                     }
                     hideSoftKeyboard(getActivity());
+                    requireView().clearFocus();
                     return true;
                 }
 
@@ -127,7 +108,6 @@ public class ConfigurationFragment extends Fragment {
         {
             e.printStackTrace();
         }
-
     }
 
     private void observeCityName() {
@@ -139,14 +119,7 @@ public class ConfigurationFragment extends Fragment {
     private void observeWeatherData() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
             cityNameTextView.setText(cityInputTextView.getText().toString());
-            coordsTextView.setText(weatherData.getLat() + "\n" + weatherData.getLon().toString());
-            timeTextView.setText(weatherData.getCurrent().getRequestTime().getHour() + ":" + weatherData.getCurrent().getRequestTime().getMinute()
-                    + "\n" + weatherData.getCurrent().getRequestTime().getDayOfMonth() + "/" + weatherData.getCurrent().getRequestTime().getMonth());
-            int temp = weatherData.getCurrent().getTemp().intValue();
-            temperatureTextView.setText(Integer.toString(temp) + " C");
-            pressureTextView.setText(weatherData.getCurrent().getPressure().toString() + " hPa");
             setWeatherIcon(weatherData.getCurrent().getWeather().get(0).getIcon());
-
         });
     }
 
@@ -162,10 +135,6 @@ public class ConfigurationFragment extends Fragment {
     private void observeError() {
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             this.cityNameTextView.setText(error);
-            coordsTextView.setText("");
-            timeTextView.setText("");
-            temperatureTextView.setText("");
-            pressureTextView.setText("");
         });
     }
 

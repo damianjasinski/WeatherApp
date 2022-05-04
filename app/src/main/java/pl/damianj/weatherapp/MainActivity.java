@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
+import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class MainActivity extends FragmentActivity {
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity {
             fragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.config_fragment, ConfigurationFragment.class, null)
+                    .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
                     .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
                     .commit();
         }
