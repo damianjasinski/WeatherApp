@@ -44,7 +44,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/pager_background"
         android:backgroundTint="#046A61"
         app:layout_constraintBottom_toBottomOf="parent"

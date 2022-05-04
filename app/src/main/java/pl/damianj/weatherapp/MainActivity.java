@@ -2,10 +2,12 @@ package pl.damianj.weatherapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.fragment.app.FragmentActivity;
@@ -33,10 +35,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
         viewPager.setAdapter(pagerAdapter);
@@ -54,9 +52,6 @@ public class MainActivity extends FragmentActivity {
             viewPager.setCurrentItem(0);
         });
     }
-
-
-
 
 
     @Override
