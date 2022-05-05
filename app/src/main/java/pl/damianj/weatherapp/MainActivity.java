@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
 import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
+import pl.damianj.weatherapp.storage.StorageService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class MainActivity extends FragmentActivity {
@@ -35,18 +36,20 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //initialize StorageService
+        StorageService.createInstance(this.getPreferences(Context.MODE_PRIVATE));
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setFocusedByDefault(false);
-        if (savedInstanceState == null) {
-            fragmentManager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.config_fragment, ConfigurationFragment.class, null)
-                    .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
-                    .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
-                    .commit();
-        }
+
+        fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.config_fragment, ConfigurationFragment.class, null)
+                .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
+                .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
+                .commit();
+
         viewModel = new ViewModelProvider(this).get(WeatherDataViewModel.class);
         viewModel.getWeatherData().observe(this, weatherData -> {
             viewPager.setCurrentItem(0);
