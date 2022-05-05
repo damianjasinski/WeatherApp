@@ -75,7 +75,6 @@ public class StorageService {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
-        WeatherForecast weatherForecast1 = gson.fromJson(weatherForecast, WeatherForecast.class);
         if (!"NotFound".equals(weatherForecast)) {
             return gson.fromJson(weatherForecast, WeatherForecast.class);
         }

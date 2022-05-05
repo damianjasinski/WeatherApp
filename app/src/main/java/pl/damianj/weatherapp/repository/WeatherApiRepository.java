@@ -42,7 +42,6 @@ public class WeatherApiRepository {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
                 weatherData.setCityName(coords.getCityName());
-                weatherData.setCoord(coords);
                 viewModel.setWeatherData(weatherData);
             }
 
@@ -77,12 +76,13 @@ public class WeatherApiRepository {
     }
 
     public void refreshWeatherForecast(WeatherDataViewModel viewModel) {
-        weatherDataService.getWeatherData(viewModel.getWeatherData().getValue().getCoord().getLat(), viewModel.getWeatherData().getValue().getCoord().getLon()).enqueue(new Callback<WeatherForecast>() {
+        weatherDataService.getWeatherData(viewModel.getWeatherData().getValue().getLat(), viewModel.getWeatherData().getValue().getLon()).enqueue(new Callback<WeatherForecast>() {
             @Override
             public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
-                weatherData.setCityName(viewModel.getWeatherData().getValue().getCoord().getCityName());
+                Coord coord = new Coord(viewModel.getWeatherData().getValue().getLat(), viewModel.getWeatherData().getValue().getLon(), viewModel.getWeatherData().getValue().getCityName());
+                weatherData.setCityName(coord.getCityName());
                 viewModel.setWeatherData(weatherData);
             }
 

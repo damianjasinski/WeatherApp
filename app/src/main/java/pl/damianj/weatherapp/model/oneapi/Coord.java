@@ -7,6 +7,12 @@ public class Coord {
 
     String cityName;
 
+    public Coord(Double lat, Double lon, String cityName) {
+        this.lat = lat;
+        this.lon = lon;
+        this.cityName = cityName;
+    }
+
     public Coord(Double lat, Double lon) {
         this.lat = lat;
         this.lon = lon;
