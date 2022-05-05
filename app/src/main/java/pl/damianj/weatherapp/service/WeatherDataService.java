@@ -3,8 +3,7 @@ package pl.damianj.weatherapp.service;
 import java.util.List;
 
 import pl.damianj.weatherapp.BuildConfig;
-import pl.damianj.weatherapp.model.Coord;
-import pl.damianj.weatherapp.model.WeatherData;
+import pl.damianj.weatherapp.model.oneapi.Coord;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import retrofit2.Call;
 import retrofit2.http.GET;
