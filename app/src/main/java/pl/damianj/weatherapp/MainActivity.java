@@ -1,8 +1,10 @@
 package pl.damianj.weatherapp;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -41,6 +43,12 @@ public class MainActivity extends FragmentActivity {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         setSwipeRefreshAction();
 
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.config_fragment, ConfigurationFragment.class, null)
@@ -61,14 +69,11 @@ public class MainActivity extends FragmentActivity {
 
     private void setSwipeRefreshAction() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
             @Override
-
             public void onRefresh() {
                 WeatherApiRepository.getInstance().refreshWeatherForecast(viewModel);
                 swipeRefreshLayout.setRefreshing(false);
             }
-
         });
     }
 
