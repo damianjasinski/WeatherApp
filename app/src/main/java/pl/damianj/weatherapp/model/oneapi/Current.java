@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class Current {
 
-    private LocalDateTime request_time;
     private Integer dt;
     private Integer sunrise;
     private Integer sunset;
@@ -27,14 +26,6 @@ public class Current {
     private Integer wind_deg;
     private List<Weather> weather = null;
     private Rain rain;
-
-    public LocalDateTime getRequestTime() {
-        return request_time;
-    }
-
-    public void setRequestTime(LocalDateTime time) {
-        request_time = time;
-    }
 
     public Integer getDt() {
         return dt;

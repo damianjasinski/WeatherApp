@@ -1,10 +1,11 @@
-
-package pl.damianj.weatherapp.model;
+package pl.damianj.weatherapp.model.oneapi;
 
 public class Coord {
 
     private Double lon;
     private Double lat;
+
+    String cityName;
 
     public Coord(Double lat, Double lon) {
         this.lat = lat;
@@ -14,6 +15,14 @@ public class Coord {
     public Coord(Coord coord) {
         this.lat = coord.getLat();
         this.lon = coord.getLon();
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public Double getLon() {
