@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import pl.damianj.weatherapp.model.Coord;
-import pl.damianj.weatherapp.model.WeatherData;
+import pl.damianj.weatherapp.model.oneapi.Coord;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import retrofit2.converter.gson.GsonConverterFactory;

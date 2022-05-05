@@ -1,22 +1,20 @@
 package pl.damianj.weatherapp.repository;
 
-import android.security.identity.InvalidRequestMessageException;
 import android.util.Log;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
-import pl.damianj.weatherapp.model.Coord;
-import pl.damianj.weatherapp.model.WeatherData;
-import pl.damianj.weatherapp.model.oneapi.Daily;
+
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.service.WeatherDataService;
+import pl.damianj.weatherapp.storage.StorageService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.converter.gson.GsonConverterFactory;
+import pl.damianj.weatherapp.model.oneapi.Coord;
 
 public class WeatherApiRepository {
     private static WeatherApiRepository weatherApiRepository = null;
@@ -37,14 +35,14 @@ public class WeatherApiRepository {
         return weatherApiRepository;
     }
 
-    public void getWeatherData(Coord coords, WeatherDataViewModel weatherDataVM) {
+    public void getWeatherData(Coord coords, WeatherDataViewModel viewModel) {
         weatherDataService.getWeatherData(coords.getLat(), coords.getLon()).enqueue(new Callback<WeatherForecast>() {
             @Override
             public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
-                weatherData.getCurrent().setRequestTime(LocalDateTime.now());
-                weatherDataVM.setWeatherData(weatherData);
+                weatherData.setCityName(coords.getCityName());
+                viewModel.setWeatherData(weatherData);
             }
 
             @Override
@@ -54,7 +52,7 @@ public class WeatherApiRepository {
         });
     }
 
-    public void getGeoCity(String cityName, WeatherDataViewModel weatherDataVM)  {
+    public void getCityCoords(String cityName, WeatherDataViewModel weatherDataVM)  {
         weatherDataService.getCityGeo(cityName).enqueue(new Callback<List<Coord>>() {
             @Override
             public void onResponse(Call<List<Coord>> call, Response<List<Coord>> response) {
@@ -64,6 +62,7 @@ public class WeatherApiRepository {
                 else {
                     Log.i("RETROFIT-GEOCITY", response.body().toString());
                     Coord coord = new Coord(response.body().get(0));
+                    coord.setCityName(cityName);
                     weatherDataVM.setCoord(coord);
                     weatherDataVM.setCityName(cityName);
                 }
