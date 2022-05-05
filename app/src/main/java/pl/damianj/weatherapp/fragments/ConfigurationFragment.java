@@ -30,11 +30,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConfigurationFragment extends Fragment {
 
-    private final WeatherDataService service = new retrofit2.Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(WeatherDataService.class);
     private EditText cityInputTextView;
     private TextView cityNameTextView;
     private ImageView weatherIcon;
@@ -53,7 +48,6 @@ public class ConfigurationFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-
     }
 
     @Override
@@ -102,7 +96,7 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT) {
-                    if (!textView.getText().toString().equals(cityNameTextView.getText().toString())) {
+                    if (!textView.getText().toString().equals(cityNameTextView.getText().toString()) && !"".equals(textView.getText().toString()) ) {
                         weatherApiRepository.getCityCoords(textView.getText().toString(), viewModel);
                     }
                     hideSoftKeyboard(getActivity());
