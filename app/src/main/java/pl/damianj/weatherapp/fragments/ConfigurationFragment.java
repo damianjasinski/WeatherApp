@@ -24,9 +24,7 @@ import com.bumptech.glide.Glide;
 import pl.damianj.weatherapp.R;
 import pl.damianj.weatherapp.fragments.dialog.CustomDialog;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
-import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConfigurationFragment extends Fragment {
 
@@ -77,7 +75,7 @@ public class ConfigurationFragment extends Fragment {
         setConfigClickListener();
         observeError();
         observeCityName();
-        observeWeatherData();
+        observeWeatherForecast();
         return root;
     }
 
@@ -127,11 +125,11 @@ public class ConfigurationFragment extends Fragment {
         });
     }
 
-    private void observeWeatherData() {
-        viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            cityNameTextView.setText(weatherData.getCityName());
-            cityInputTextView.setText(weatherData.getCityName());
-            setWeatherIcon(weatherData.getCurrent().getWeather().get(0).getIcon());
+    private void observeWeatherForecast() {
+        viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
+            cityNameTextView.setText(weatherForecast.getCityName());
+            cityInputTextView.setText(weatherForecast.getCityName());
+            setWeatherIcon(weatherForecast.getCurrent().getWeather().get(0).getIcon());
         });
     }
 

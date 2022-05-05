@@ -8,15 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 import pl.damianj.weatherapp.R;
-import pl.damianj.weatherapp.storage.StorageService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 
@@ -55,24 +52,24 @@ public class PrimaryDataFragment extends Fragment {
         pressureTextView = root.findViewById(R.id.pressure_text_view);
         temperatureTextView = root.findViewById(R.id.wind_text_view);
         viewModel = new ViewModelProvider(requireActivity()).get(WeatherDataViewModel.class);
-        observeWeatherData();
+        observeWeatherForecast();
         observeError();
         return root;
     }
 
-    private void observeWeatherData() {
-        viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            long epochTime = weatherData.getCurrent().getDt();
-            int temp = weatherData.getCurrent().getTemp().intValue();
+    private void observeWeatherForecast() {
+        viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
+            long epochTime = weatherForecast.getCurrent().getDt();
+            int temp = weatherForecast.getCurrent().getTemp().intValue();
             LocalDateTime requestDateTime = LocalDateTime.ofEpochSecond(epochTime, 0, OffsetDateTime.now().getOffset());
             String day = String.format("%02d", requestDateTime.getDayOfMonth());
             String month = String.format("%02d", requestDateTime.getMonthValue());
 
             timeTextView.setText(requestDateTime.getHour() + ":" + requestDateTime.getMinute()
                     + "\n" + day + "/" + month);
-            coordsTextView.setText(weatherData.getLat() + "\n" + weatherData.getLon().toString());
-            temperatureTextView.setText(Integer.toString(temp) + " C" + "\n" + weatherData.getCurrent().getWeather().get(0).getMain());
-            pressureTextView.setText(weatherData.getCurrent().getPressure().toString() + " hPa");
+            coordsTextView.setText(weatherForecast.getLat() + "\n" + weatherForecast.getLon().toString());
+            temperatureTextView.setText(Integer.toString(temp) + " C" + "\n" + weatherForecast.getCurrent().getWeather().get(0).getMain());
+            pressureTextView.setText(weatherForecast.getCurrent().getPressure().toString() + " hPa");
 
 
         });
