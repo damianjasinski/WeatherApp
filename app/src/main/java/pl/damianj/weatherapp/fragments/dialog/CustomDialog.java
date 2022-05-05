@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 import pl.damianj.weatherapp.R;
@@ -29,7 +30,7 @@ public class CustomDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(WeatherDataViewModel.class);
         storageService = StorageService.getInstance();
-        savedCities = new ArrayList<>(storageService.getAllKeys());
+        savedCities = new ArrayList<>(storageService.getAllKeys().stream().filter(x -> !x.equals("LastSelected")).collect(Collectors.toList()));
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogeTheme);

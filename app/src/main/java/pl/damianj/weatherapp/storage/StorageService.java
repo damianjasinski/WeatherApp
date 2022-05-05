@@ -2,6 +2,8 @@ package pl.damianj.weatherapp.storage;
 
 
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -55,5 +57,28 @@ public class StorageService {
         return gson.fromJson(weatherForecast, WeatherForecast.class);
     }
 
+    public void saveLastSelected(WeatherForecast weatherForecast) {
+        if (weatherForecast != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .create();
+
+            String jsonString = gson.toJson(weatherForecast);
+            editor.putString("LastSelected", jsonString);
+            editor.commit();
+        }
+    }
+
+    public WeatherForecast loadLastSelected() {
+        String weatherForecast = sharedPreferences.getString("LastSelected", "NotFound");
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        if (!"NotFound".equals(weatherForecast)) {
+            return gson.fromJson(weatherForecast, WeatherForecast.class);
+        }
+        return null;
+    }
 
 }

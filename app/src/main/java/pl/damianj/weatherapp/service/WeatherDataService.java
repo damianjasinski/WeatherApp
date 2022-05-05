@@ -10,9 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface WeatherDataService {
-//    @GET("/data/2.5/weather?appid=" + BuildConfig.API_KEY)
-//    Call<WeatherData> getWeatherData(@Query("q") String cityName);
-
 
     @GET("/geo/1.0/direct?&appid=" + BuildConfig.API_KEY)
     Call<List<Coord>> getCityGeo(@Query("q") String cityName);

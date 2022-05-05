@@ -1,26 +1,18 @@
 package pl.damianj.weatherapp;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
 import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
+import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.storage.StorageService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
@@ -54,6 +46,11 @@ public class MainActivity extends FragmentActivity {
         viewModel.getWeatherData().observe(this, weatherData -> {
             viewPager.setCurrentItem(0);
         });
+
+        WeatherForecast lastSelected = StorageService.getInstance().loadLastSelected();
+        if (lastSelected != null) {
+            viewModel.setWeatherData(lastSelected);
+        }
     }
 
 
@@ -66,5 +63,10 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        StorageService storageService = StorageService.getInstance();
+        storageService.saveLastSelected(viewModel.getWeatherData().getValue());
+    }
 }
