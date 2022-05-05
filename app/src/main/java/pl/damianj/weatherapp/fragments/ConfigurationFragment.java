@@ -36,16 +36,7 @@ public class ConfigurationFragment extends Fragment {
     private WeatherApiRepository weatherApiRepository;
 
     private CustomDialog cityDialog;
-
-
     public ConfigurationFragment() {
-    }
-
-    public static ConfigurationFragment newInstance(String param1, String param2) {
-        ConfigurationFragment fragment = new ConfigurationFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -87,6 +78,7 @@ public class ConfigurationFragment extends Fragment {
                         getChildFragmentManager(), "CityDialog");
             }
         });
+
     }
 
     private void setEditTextListener(WeatherApiRepository weatherApiRepository) {
@@ -105,6 +97,7 @@ public class ConfigurationFragment extends Fragment {
             }
         });
     }
+
 
     private static void hideSoftKeyboard(Activity activity) {
         try {

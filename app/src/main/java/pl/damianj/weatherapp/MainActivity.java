@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -13,6 +14,7 @@ import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
 import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
+import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.storage.StorageService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
@@ -23,6 +25,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentStateAdapter pagerAdapter;
     private Integer numOfPages = 6;
     private WeatherDataViewModel viewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class MainActivity extends FragmentActivity {
         pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setFocusedByDefault(false);
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        setSwipeRefreshAction();
 
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
@@ -53,6 +58,18 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    private void setSwipeRefreshAction() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+
+            public void onRefresh() {
+                WeatherApiRepository.getInstance().refreshWeatherForecast(viewModel);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+        });
+    }
 
     @Override
     public void onBackPressed() {

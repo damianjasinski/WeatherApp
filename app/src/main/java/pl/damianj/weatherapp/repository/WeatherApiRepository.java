@@ -42,6 +42,7 @@ public class WeatherApiRepository {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
                 weatherData.setCityName(coords.getCityName());
+                weatherData.setCoord(coords);
                 viewModel.setWeatherData(weatherData);
             }
 
@@ -52,25 +53,42 @@ public class WeatherApiRepository {
         });
     }
 
-    public void getCityCoords(String cityName, WeatherDataViewModel weatherDataVM)  {
+    public void getCityCoords(String cityName, WeatherDataViewModel viewModel)  {
         weatherDataService.getCityGeo(cityName).enqueue(new Callback<List<Coord>>() {
             @Override
             public void onResponse(Call<List<Coord>> call, Response<List<Coord>> response) {
                 if (response.body().size() == 0) {
-                   weatherDataVM.setError("City not found");
+                   viewModel.setError("City not found");
                 }
                 else {
                     Log.i("RETROFIT-GEOCITY", response.body().toString());
                     Coord coord = new Coord(response.body().get(0));
                     coord.setCityName(cityName);
-                    weatherDataVM.setCoord(coord);
-                    weatherDataVM.setCityName(cityName);
+                    viewModel.setCoord(coord);
+                    viewModel.setCityName(cityName);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Coord>> call, Throwable t) {
                 Log.e("RETROFIT-GEOCITY", t.getMessage());
+            }
+        });
+    }
+
+    public void refreshWeatherForecast(WeatherDataViewModel viewModel) {
+        weatherDataService.getWeatherData(viewModel.getWeatherData().getValue().getCoord().getLat(), viewModel.getWeatherData().getValue().getCoord().getLon()).enqueue(new Callback<WeatherForecast>() {
+            @Override
+            public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
+                Log.i("RETROFIT-WEATHERDATA", response.body().toString());
+                WeatherForecast weatherData = response.body();
+                weatherData.setCityName(viewModel.getWeatherData().getValue().getCoord().getCityName());
+                viewModel.setWeatherData(weatherData);
+            }
+
+            @Override
+            public void onFailure(Call<WeatherForecast> call, Throwable t) {
+                Log.e("RETROFIT-WEATHERDATA", "Request was unsuccesfull " + t.getMessage() );
             }
         });
     }

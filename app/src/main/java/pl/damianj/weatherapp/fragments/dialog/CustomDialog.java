@@ -49,6 +49,7 @@ public class CustomDialog extends DialogFragment {
                     Toast.makeText(requireActivity(),viewModel.getWeatherData().getValue().getCityName() + " is already saved!",Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
         builder.setTitle("Select City")
                 .setItems(savedCities.toArray(new String[0]), new DialogInterface.OnClickListener() {
@@ -57,6 +58,7 @@ public class CustomDialog extends DialogFragment {
                         WeatherForecast selectedCity = storageService.loadWeatherData(savedCities.get(which));
                         viewModel.setWeatherData(selectedCity);
                     }
+
                 });
         // Create the AlertDialog object and return it
         return builder.create();

@@ -5,6 +5,7 @@ import java.util.List;
 public class WeatherForecast {
 
     String cityName;
+    private Coord coord;
     private Double lat;
     private Double lon;
     private String timezone;
@@ -13,7 +14,13 @@ public class WeatherForecast {
     private Rain rain;
     private List<Daily> daily;
 
+    public Coord getCoord() {
+        return coord;
+    }
 
+    public void setCoord(Coord coord) {
+        this.coord = coord;
+    }
     public String getCityName() {
         return cityName;
     }
