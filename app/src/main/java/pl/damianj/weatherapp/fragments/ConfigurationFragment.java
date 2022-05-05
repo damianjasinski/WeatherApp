@@ -15,12 +15,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import pl.damianj.weatherapp.R;
+import pl.damianj.weatherapp.fragments.dialog.CustomDialog;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.service.WeatherDataService;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
@@ -36,8 +38,12 @@ public class ConfigurationFragment extends Fragment {
     private EditText cityInputTextView;
     private TextView cityNameTextView;
     private ImageView weatherIcon;
+    private ImageButton cityConfig;
     private WeatherDataViewModel viewModel;
     private WeatherApiRepository weatherApiRepository;
+
+    private CustomDialog cityDialog;
+
 
     public ConfigurationFragment() {
     }
@@ -71,11 +77,24 @@ public class ConfigurationFragment extends Fragment {
         cityInputTextView = root.findViewById(R.id.input_city);
         weatherIcon = root.findViewById(R.id.weather_icon);
         cityNameTextView = root.findViewById(R.id.city_text_view);
+        cityConfig = root.findViewById(R.id.dialog_button);
+        cityDialog =  new CustomDialog();
         setEditTextListener(weatherApiRepository);
+        setConfigClickListener();
         observeError();
         observeCityName();
         observeWeatherData();
         return root;
+    }
+
+    private void setConfigClickListener() {
+        cityConfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cityDialog.show(
+                        getChildFragmentManager(), "CityDialog");
+            }
+        });
     }
 
     private void setEditTextListener(WeatherApiRepository weatherApiRepository) {
@@ -83,19 +102,19 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT) {
-                    if ( !textView.getText().toString().equals(cityNameTextView.getText().toString())) {
-                        weatherApiRepository.getGeoCity(textView.getText().toString(), viewModel);
+                    if (!textView.getText().toString().equals(cityNameTextView.getText().toString())) {
+                        weatherApiRepository.getCityCoords(textView.getText().toString(), viewModel);
                     }
                     hideSoftKeyboard(getActivity());
                     requireView().clearFocus();
                     return true;
                 }
-
                 return false;
             }
         });
     }
-    public static void hideSoftKeyboard(Activity activity) {
+
+    private static void hideSoftKeyboard(Activity activity) {
         try {
             InputMethodManager inputMethodManager =
                     (InputMethodManager) activity.getSystemService(
@@ -103,9 +122,7 @@ public class ConfigurationFragment extends Fragment {
             inputMethodManager.hideSoftInputFromWindow(
                     activity.getCurrentFocus().getWindowToken(), 0);
             //inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -118,8 +135,15 @@ public class ConfigurationFragment extends Fragment {
 
     private void observeWeatherData() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherData -> {
-            cityNameTextView.setText(cityInputTextView.getText().toString());
+            cityNameTextView.setText(weatherData.getCityName());
+            cityInputTextView.setText(weatherData.getCityName());
             setWeatherIcon(weatherData.getCurrent().getWeather().get(0).getIcon());
+        });
+    }
+
+    private void observeError() {
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            this.cityNameTextView.setText(error);
         });
     }
 
@@ -129,14 +153,5 @@ public class ConfigurationFragment extends Fragment {
                 .load(url)
                 .override(200, 250)
                 .into(weatherIcon);
-
     }
-
-    private void observeError() {
-        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
-            this.cityNameTextView.setText(error);
-        });
-    }
-
-
 }
