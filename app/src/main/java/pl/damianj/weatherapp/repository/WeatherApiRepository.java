@@ -84,6 +84,7 @@ public class WeatherApiRepository {
                 Coord coord = new Coord(viewModel.getWeatherData().getValue().getLat(), viewModel.getWeatherData().getValue().getLon(), viewModel.getWeatherData().getValue().getCityName());
                 weatherData.setCityName(coord.getCityName());
                 viewModel.setWeatherData(weatherData);
+                StorageService.getInstance().updateIfSaved(viewModel.getWeatherData().getValue());
             }
 
             @Override

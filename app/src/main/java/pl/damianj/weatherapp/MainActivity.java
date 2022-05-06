@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
@@ -42,7 +47,6 @@ public class MainActivity extends FragmentActivity {
         viewPager.setFocusedByDefault(false);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         setSwipeRefreshAction();
-
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
@@ -65,6 +69,19 @@ public class MainActivity extends FragmentActivity {
         if (lastSelected != null) {
             viewModel.setWeatherData(lastSelected);
         }
+        checkIfDataIsOld();
+    }
+
+    private void checkIfDataIsOld() {
+        viewModel.getWeatherData().observe(this, weatherForecast -> {
+            LocalDateTime now = LocalDateTime.now();
+            long epochTime = weatherForecast.getCurrent().getDt();
+            int temp = weatherForecast.getCurrent().getTemp().intValue();
+            LocalDateTime requestDateTime = LocalDateTime.ofEpochSecond(epochTime, 0, OffsetDateTime.now().getOffset());
+            if (Duration.between(requestDateTime, now).toMinutes() > 60) {
+                Toast.makeText(this,viewModel.getWeatherData().getValue().getCityName() + " was last updated " + Duration.between(requestDateTime, now).toHours() + " hours ago\nSwipe to refresh" ,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setSwipeRefreshAction() {

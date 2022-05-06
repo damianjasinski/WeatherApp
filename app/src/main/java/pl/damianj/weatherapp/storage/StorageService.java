@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
@@ -81,4 +82,13 @@ public class StorageService {
         return null;
     }
 
+    public void updateIfSaved(WeatherForecast weatherForecast) {
+        Set<String> savedCities = sharedPreferences.getAll().keySet();
+        Optional<String> isSaved = savedCities.stream()
+                .filter(x -> x.equals(weatherForecast.getCityName()))
+                .findAny();
+        if (isSaved.isPresent()) {
+            saveToFile(weatherForecast);
+        }
+    }
 }
