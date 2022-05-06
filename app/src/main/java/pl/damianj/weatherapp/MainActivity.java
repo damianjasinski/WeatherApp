@@ -24,6 +24,7 @@ import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.storage.StorageService;
+import pl.damianj.weatherapp.util.NetworkUtils;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class MainActivity extends FragmentActivity {
@@ -49,8 +50,7 @@ public class MainActivity extends FragmentActivity {
         setSwipeRefreshAction();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        else {
+        } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         fragmentManager.beginTransaction()
@@ -79,7 +79,7 @@ public class MainActivity extends FragmentActivity {
             int temp = weatherForecast.getCurrent().getTemp().intValue();
             LocalDateTime requestDateTime = LocalDateTime.ofEpochSecond(epochTime, 0, OffsetDateTime.now().getOffset());
             if (Duration.between(requestDateTime, now).toMinutes() > 60) {
-                Toast.makeText(this,viewModel.getWeatherData().getValue().getCityName() + " was last updated " + Duration.between(requestDateTime, now).toHours() + " hours ago\nSwipe to refresh" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, viewModel.getWeatherData().getValue().getCityName() + " was last updated " + Duration.between(requestDateTime, now).toHours() + " hours ago\nSwipe to refresh", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -88,8 +88,13 @@ public class MainActivity extends FragmentActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                WeatherApiRepository.getInstance().refreshWeatherForecast(viewModel);
-                swipeRefreshLayout.setRefreshing(false);
+                if (NetworkUtils.isNetworkConnected(peekAvailableContext())) {
+                    WeatherApiRepository.getInstance().refreshWeatherForecast(viewModel);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    Toast.makeText(peekAvailableContext(), "No connection available" , Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }
