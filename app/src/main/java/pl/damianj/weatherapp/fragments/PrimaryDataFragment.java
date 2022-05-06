@@ -64,8 +64,9 @@ public class PrimaryDataFragment extends Fragment {
             LocalDateTime requestDateTime = LocalDateTime.ofEpochSecond(epochTime, 0, OffsetDateTime.now().getOffset());
             String day = String.format("%02d", requestDateTime.getDayOfMonth());
             String month = String.format("%02d", requestDateTime.getMonthValue());
-
-            timeTextView.setText(requestDateTime.getHour() + ":" + requestDateTime.getMinute()
+            String hour = String.format("%02d",requestDateTime.getHour());
+            String minute = String.format("%02d",requestDateTime.getMinute());
+            timeTextView.setText(hour + ":" + minute
                     + "\n" + day + "/" + month);
             coordsTextView.setText(weatherForecast.getLat() + "\n" + weatherForecast.getLon().toString());
             temperatureTextView.setText(Integer.toString(temp) + " C" + "\n" + weatherForecast.getCurrent().getWeather().get(0).getMain());
