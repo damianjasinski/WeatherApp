@@ -39,13 +39,14 @@
             android:id="@+id/config_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5" />
+            android:layout_weight="6"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
-            android:layout_weight="8"
+            android:layout_weight="7"
             android:orientation="horizontal">
 
             <androidx.fragment.app.FragmentContainerView
@@ -53,39 +54,24 @@
                 android:name="pl.damianj.weatherapp.fragments.PrimaryDataFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="6" />
+                android:layout_weight="1" />
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/additional_data_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="6" />
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/weekly_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="4"
             android:background="@drawable/pager_background"
-            android:backgroundTint="#046A61">
+            android:backgroundTint="#046A61" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/pager_background"
-                android:backgroundTint="#046A61"
-                android:focusable="auto">
-
-            </androidx.viewpager2.widget.ViewPager2>
-        </FrameLayout>
-
-    </LinearLayout><![CDATA[
+    </LinearLayout>
 
 
-    >
-
-
-]]>
 </androidx.constraintlayout.widget.ConstraintLayout>

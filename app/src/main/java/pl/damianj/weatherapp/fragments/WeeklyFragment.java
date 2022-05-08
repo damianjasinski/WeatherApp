@@ -108,7 +108,7 @@ public class WeeklyFragment extends Fragment {
         String url = "https://openweathermap.org/img/wn/" + iconId + "@4x.png";
         Glide.with(getActivity())
                 .load(url)
-                .override(400, 450)
+                .override(350, 400)
                 .into(weatherIcon);
     }
 

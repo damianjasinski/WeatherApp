@@ -3,7 +3,6 @@ package pl.damianj.weatherapp;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -17,10 +16,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import pl.damianj.weatherapp.fragments.AdditionalDataFragment;
 import pl.damianj.weatherapp.fragments.ConfigurationFragment;
 import pl.damianj.weatherapp.fragments.PrimaryDataFragment;
+import pl.damianj.weatherapp.fragments.tablet.WeeklyFragmentTablet;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.repository.WeatherApiRepository;
 import pl.damianj.weatherapp.storage.StorageService;
@@ -40,12 +41,32 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //initialize StorageService
         StorageService.createInstance(this.getPreferences(Context.MODE_PRIVATE));
-        viewPager = findViewById(R.id.pager);
-        pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setFocusedByDefault(false);
+        viewModel = new ViewModelProvider(this).get(WeatherDataViewModel.class);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
+            fragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.config_fragment, ConfigurationFragment.class, null)
+                    .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
+                    .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
+                    .add(R.id.weekly_fragment, WeeklyFragmentTablet.class, null)
+                    .commit();
+        } else {
+            viewPager = findViewById(R.id.pager);
+            pagerAdapter = new ScreenSlidePageAdapter(this, numOfPages);
+            viewPager.setAdapter(pagerAdapter);
+            viewPager.setFocusedByDefault(false);
+            fragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.config_fragment, ConfigurationFragment.class, null)
+                    .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
+                    .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
+                    .commit();
+            viewModel.getWeatherData().observe(this, weatherData -> {
+                viewPager.setCurrentItem(0);
+            });
+        }
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         setSwipeRefreshAction();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -53,18 +74,6 @@ public class MainActivity extends FragmentActivity {
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        fragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.config_fragment, ConfigurationFragment.class, null)
-                .add(R.id.primary_fragment, PrimaryDataFragment.class, null)
-                .add(R.id.additional_data_fragment, AdditionalDataFragment.class, null)
-                .commit();
-
-        viewModel = new ViewModelProvider(this).get(WeatherDataViewModel.class);
-        viewModel.getWeatherData().observe(this, weatherData -> {
-            viewPager.setCurrentItem(0);
-        });
-
         WeatherForecast lastSelected = StorageService.getInstance().loadLastSelected();
         if (lastSelected != null) {
             viewModel.setWeatherData(lastSelected);
@@ -92,7 +101,7 @@ public class MainActivity extends FragmentActivity {
                     WeatherApiRepository.getInstance().refreshWeatherForecast(viewModel);
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
-                    Toast.makeText(peekAvailableContext(), "No connection available" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(peekAvailableContext(), "No connection available", Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }
