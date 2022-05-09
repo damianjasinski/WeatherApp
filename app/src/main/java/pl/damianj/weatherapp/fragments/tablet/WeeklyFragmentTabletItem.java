@@ -71,9 +71,8 @@ public class WeeklyFragmentTabletItem extends Fragment {
         Daily daily = viewModel.getWeatherData().getValue().getDaily().get(day + 1);
         LocalDate today = LocalDate.now().plusDays(day);
         int temp = daily.getTemp().getDay().intValue();
-        tempTextView.setText(temp + " C\n" + daily.getWeather().get(0).getMain());
-        tempTextView.setText(temp + " C\n" + daily.getWeather().get(0).getMain());
-        windTextView.setText(daily.getWindSpeed().toString() + "m/s");
+        tempTextView.setText(temp + " " + viewModel.getUnitSystem().get("temp") + "\n" + daily.getWeather().get(0).getMain());
+        windTextView.setText(String.format("%.2f",daily.getWindSpeed()) + viewModel.getUnitSystem().get("wind"));
         humidTextView.setText("Humid. " + daily.getHumidity().toString() + "%");
         pressTextView.setText(daily.getPressure().toString() + "hpA");
         setDayName(today.getDayOfWeek().toString());

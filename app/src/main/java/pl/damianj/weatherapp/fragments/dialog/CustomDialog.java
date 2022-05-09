@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import pl.damianj.weatherapp.R;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.storage.StorageService;
+import pl.damianj.weatherapp.util.UnitConverter;
 import pl.damianj.weatherapp.viewmodel.WeatherDataViewModel;
 
 public class CustomDialog extends DialogFragment {
@@ -36,21 +37,30 @@ public class CustomDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogeTheme);
         builder.setPositiveButton("Add current city", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //TODO
                 StorageService storageService = StorageService.getInstance();
                 if (viewModel.getWeatherData().getValue() == null) {
-                    Toast.makeText(requireActivity(),"No city selected!",Toast.LENGTH_SHORT).show();
-                }
-                else if (viewModel.getWeatherData().getValue() != null && !savedCities.contains(viewModel.getWeatherData().getValue().getCityName())) {
+                    Toast.makeText(requireActivity(), "No city selected!", Toast.LENGTH_SHORT).show();
+                } else if (viewModel.getWeatherData().getValue() != null && !savedCities.contains(viewModel.getWeatherData().getValue().getCityName())) {
                     storageService.saveToFile(viewModel.getWeatherData().getValue());
-                    Toast.makeText(requireActivity(),"City " + viewModel.getWeatherData().getValue().getCityName() + " saved",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(requireActivity(),viewModel.getWeatherData().getValue().getCityName() + " is already saved!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), "City " + viewModel.getWeatherData().getValue().getCityName() + " saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireActivity(), viewModel.getWeatherData().getValue().getCityName() + " is already saved!", Toast.LENGTH_SHORT).show();
                 }
             }
-
         });
+        builder.setNegativeButton("Change Unit System", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (viewModel.isUnitSystemMetric()) {
+                    UnitConverter.getUnitCoverter().convertMetricToImperial(viewModel);
+                    viewModel.setUnitSystemMetric(false);
+                }
+                else {
+                    UnitConverter.getUnitCoverter().convertImperialToMetric(viewModel);
+                    viewModel.setUnitSystemMetric(true);
+                }
+            }
+        });
+
         builder.setTitle("Select City")
                 .setItems(savedCities.toArray(new String[0]), new DialogInterface.OnClickListener() {
                     @Override

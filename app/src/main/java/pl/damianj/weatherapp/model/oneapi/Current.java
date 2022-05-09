@@ -120,7 +120,7 @@ public class Current {
     }
 
     public void setWindSpeed(Double windSpeed) {
-        this.windSpeed = Current.this.windSpeed;
+        this.windSpeed = windSpeed;
     }
 
     public Integer getWindDeg() {

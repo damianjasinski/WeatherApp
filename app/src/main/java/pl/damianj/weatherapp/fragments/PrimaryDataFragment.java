@@ -69,10 +69,8 @@ public class PrimaryDataFragment extends Fragment {
             timeTextView.setText(hour + ":" + minute
                     + "\n" + day + "/" + month);
             coordsTextView.setText(weatherForecast.getLat() + "\n" + weatherForecast.getLon().toString());
-            temperatureTextView.setText(Integer.toString(temp) + " C" + "\n" + weatherForecast.getCurrent().getWeather().get(0).getMain());
+            temperatureTextView.setText(Integer.toString(temp) + " " + viewModel.getUnitSystem().get("temp") + "\n" + weatherForecast.getCurrent().getWeather().get(0).getMain());
             pressureTextView.setText(weatherForecast.getCurrent().getPressure().toString() + " hPa");
-
-
         });
     }
 

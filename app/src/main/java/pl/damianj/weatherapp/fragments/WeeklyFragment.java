@@ -85,8 +85,8 @@ public class WeeklyFragment extends Fragment {
             int temp = daily.getTemp().getDay().intValue();
             setDayName(today.getDayOfWeek().toString());
             setWeatherIcon(daily.getWeather().get(0).getIcon());
-            tempTextView.setText(temp + " C\n" + daily.getWeather().get(0).getMain());
-            windTextView.setText(daily.getWindSpeed().toString() + "m/s");
+            tempTextView.setText(temp + " " + viewModel.getUnitSystem().get("temp") + daily.getWeather().get(0).getMain());
+            windTextView.setText(Double.toString(daily.getWindSpeed()) + viewModel.getUnitSystem().get("temp"));
             humidTextView.setText(daily.getHumidity().toString() + "%");
             pressureTextView.setText(daily.getPressure().toString() + "hpA");
             setHintsVisible();

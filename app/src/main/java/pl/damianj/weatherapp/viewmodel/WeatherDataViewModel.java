@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import pl.damianj.weatherapp.model.oneapi.Coord;
 import pl.damianj.weatherapp.model.oneapi.WeatherForecast;
 import pl.damianj.weatherapp.service.WeatherDataService;
@@ -14,7 +19,28 @@ public class WeatherDataViewModel extends ViewModel {
     private MutableLiveData<WeatherForecast> weatherData = new MutableLiveData<>();
     private MutableLiveData<String> error = new MutableLiveData<>();
     private Coord coord;
+    boolean isUnitSystemMetric = true;
+    private Map<String, String> unitSystem = new HashMap<String, String>() {{
+        put("wind", "m/s");
+        put("temp", "C");
+    }};
+    ;
 
+    public boolean isUnitSystemMetric() {
+        return isUnitSystemMetric;
+    }
+
+    public void setUnitSystemMetric(boolean unitSystemMetric) {
+        isUnitSystemMetric = unitSystemMetric;
+    }
+
+    public Map<String, String> getUnitSystem() {
+        return unitSystem;
+    }
+
+    public void setUnitSystem(Map<String, String> unitSystem) {
+        this.unitSystem = unitSystem;
+    }
 
     private final WeatherDataService service = new retrofit2.Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org")

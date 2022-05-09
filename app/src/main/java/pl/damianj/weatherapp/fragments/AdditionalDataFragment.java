@@ -53,12 +53,11 @@ public class AdditionalDataFragment extends Fragment {
 
     private void observeWeatherForecast() {
         viewModel.getWeatherData().observe(getViewLifecycleOwner(), weatherForecast -> {
-            double wind = weatherForecast.getCurrent().getWindSpeed();
-            windTextView.setText(Double.toString(wind) + "m/s");
+            windTextView.setText(String.format("%.2f", weatherForecast.getCurrent().getWindSpeed()) + viewModel.getUnitSystem().get("wind"));
             humidityTextView.setText(weatherForecast.getCurrent().getHumidity().toString() + "%");
             int visibility = weatherForecast.getCurrent().getVisibility()/1000;
             visibilityTextView.setText(Integer.toString(visibility) + "km");
-        });
+         });
     }
 
     private void observeError() {

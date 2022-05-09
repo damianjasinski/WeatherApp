@@ -3,6 +3,7 @@ package pl.damianj.weatherapp.repository;
 import android.util.Log;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -19,6 +20,7 @@ import pl.damianj.weatherapp.model.oneapi.Coord;
 public class WeatherApiRepository {
     private static WeatherApiRepository weatherApiRepository = null;
     private static WeatherDataService weatherDataService;
+
     private WeatherApiRepository() {
         weatherDataService = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
@@ -40,6 +42,11 @@ public class WeatherApiRepository {
                 Log.i("RETROFIT-WEATHERDATA", response.body().toString());
                 WeatherForecast weatherData = response.body();
                 weatherData.setCityName(coords.getCityName());
+                viewModel.setUnitSystemMetric(true);
+                viewModel.setUnitSystem(new HashMap<String, String>() {{
+                    put("wind", "m/s");
+                    put("temp", "C");
+                }});
                 viewModel.setWeatherData(weatherData);
                 StorageService.getInstance().updateIfSaved(viewModel.getWeatherData().getValue());
             }
@@ -51,14 +58,13 @@ public class WeatherApiRepository {
         });
     }
 
-    public void getCityCoords(String cityName, WeatherDataViewModel viewModel)  {
+    public void getCityCoords(String cityName, WeatherDataViewModel viewModel) {
         weatherDataService.getCityGeo(cityName).enqueue(new Callback<List<Coord>>() {
             @Override
             public void onResponse(Call<List<Coord>> call, Response<List<Coord>> response) {
                 if (response.body().size() == 0) {
-                   viewModel.setError("City not found");
-                }
-                else {
+                    viewModel.setError("City not found");
+                } else {
                     Log.i("RETROFIT-GEOCITY", response.body().toString());
                     Coord coord = new Coord(response.body().get(0));
                     coord.setCityName(cityName);
@@ -66,6 +72,7 @@ public class WeatherApiRepository {
                     viewModel.setCityName(cityName);
                 }
             }
+
             @Override
             public void onFailure(Call<List<Coord>> call, Throwable t) {
                 Log.e("RETROFIT", t.getMessage());
