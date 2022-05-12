@@ -17,9 +17,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import pl.damianj.weatherapp.R;
 import pl.damianj.weatherapp.fragments.dialog.CustomDialog;
@@ -34,6 +37,7 @@ public class ConfigurationFragment extends Fragment {
     private ImageButton cityConfig;
     private WeatherDataViewModel viewModel;
     private WeatherApiRepository weatherApiRepository;
+    private ListView list;
 
     private CustomDialog cityDialog;
     public ConfigurationFragment() {

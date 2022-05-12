@@ -2,13 +2,10 @@ package pl.damianj.weatherapp.storage;
 
 
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,7 +32,7 @@ public class StorageService {
         return null;
     }
 
-    public void saveToFile(WeatherForecast weatherForecast) {
+    public void saveCityToFile(WeatherForecast weatherForecast) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -43,6 +40,12 @@ public class StorageService {
 
         String jsonString = gson.toJson(weatherForecast);
         editor.putString(weatherForecast.getCityName(), jsonString);
+        editor.commit();
+    }
+
+    public void removeCity(String city) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(city);
         editor.commit();
     }
 
@@ -88,7 +91,7 @@ public class StorageService {
                 .filter(x -> x.equals(weatherForecast.getCityName()))
                 .findAny();
         if (isSaved.isPresent()) {
-            saveToFile(weatherForecast);
+            saveCityToFile(weatherForecast);
         }
     }
 }

@@ -67,6 +67,7 @@ public class MainActivity extends FragmentActivity {
                 viewPager.setCurrentItem(0);
             });
         }
+
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         setSwipeRefreshAction();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

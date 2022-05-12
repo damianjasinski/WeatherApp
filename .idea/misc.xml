@@ -8,6 +8,8 @@
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/baseline_menu_36.xml" value="0.2465" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/baseline_settings_suggest_20.xml" value="0.2465" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/baseline_settings_suggest_24.xml" value="0.2465" />
+        <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/ic_bin_svg.xml" value="0.2665" />
+        <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/ic_bin_svgrepo_com.xml" value="0.1625" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/ic_delete_svgrepo_com.xml" value="0.32" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/ic_gear_svgrepo_com.xml" value="0.2465" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/drawable/ic_gears_svgrepo_com.xml" value="0.2465" />
@@ -39,6 +41,9 @@
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/additional_fragment.xml" value="0.26358695652173914" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/configuration_fragment.xml" value="0.33" />
+        <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/custom_dialog.xml" value="0.25" />
+        <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/custom_dialog_list_view.xml" value="0.18" />
+        <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/custom_item_layout.xml" value="0.22" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/fragment_additional_data.xml" value="0.38315217391304346" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/fragment_configuration_text_view.xml" value="0.38315217391304346" />
         <entry key="..\:/programming/STUDIA/sem6/Mobilne/weather-app-android/app/src/main/res/layout/fragment_weather_data.xml" value="0.38315217391304346" />
