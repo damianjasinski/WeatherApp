@@ -73,7 +73,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="34sp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <ImageView
