@@ -3,6 +3,7 @@
 This is my weather app for android. It uses openwaetherapi for requesting data. Minimum SDK is 29. 
 
 Smartphone view: 
+
   Portrait:
   ![image](https://user-images.githubusercontent.com/73436795/169996807-2f2f61ba-d723-4083-bb05-c6f6b155c769.png)
   
@@ -11,6 +12,7 @@ Smartphone view:
 
 
 Tablew view:
+
   Portrait:
   ![image](https://user-images.githubusercontent.com/73436795/169997347-db0de11c-627b-4d7c-a104-01427a3eea7b.png)
 
