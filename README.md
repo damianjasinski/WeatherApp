@@ -14,6 +14,7 @@ Smartphone view:
 Tablew view:
 
   Portrait:
+  
   ![image](https://user-images.githubusercontent.com/73436795/169997347-db0de11c-627b-4d7c-a104-01427a3eea7b.png)
 
   
